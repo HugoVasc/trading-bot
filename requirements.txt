@@ -1,0 +1,6 @@
+ccxt
+ipykernel
+numpy
+plotly
+pandas
+streamlit
