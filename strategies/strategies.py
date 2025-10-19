@@ -8,6 +8,11 @@ class SimpleMovingAverageStrategy(Strategy):
         self.history: List[float] = []
         self.last_action = None
 
+    def reset(self):
+        """Reset the strategy state for a new simulation."""
+        self.history = []
+        self.last_action = None
+
     def decide(self, candle: Dict[str, Any]) -> Dict[str, Any]:
         self.history.append(candle["close"])
 

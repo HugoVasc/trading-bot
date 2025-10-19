@@ -10,6 +10,13 @@ class Strategy(ABC):
         Returns dict: {"action": "Buy" | "Hold" | "Sell", "timestamp": ...}
         """
         pass
+    
+    def reset(self):
+        """
+        Reset the strategy state. Override this method if the strategy maintains state.
+        This is called before each simulation run.
+        """
+        pass
 
 class TradingContext(ABC):
     @abstractmethod
