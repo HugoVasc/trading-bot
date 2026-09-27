@@ -1,247 +1,248 @@
-# Trading Bot - Sistema de Simulação
+# Trading Bot - Simulation System
 
-Um sistema completo de simulação de trading com suporte a múltiplas estratégias, moedas e métricas de performance.
+A complete trading simulation system with support for multiple strategies, currencies, and performance metrics.
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-### Sistema de Simulação
-- **Saldo inicial parametrizado** (padrão: $1.000)
-- **Percentual de compra configurável** (padrão: 50% do saldo)
-- **Taxa de transação realista** (padrão: 0.1%)
-- **Rastreamento completo de posições** e histórico de trades
-- **Cálculo automático de métricas** de performance
+### Simulation System
+- **Configurable initial balance** (default: $1,000)
+- **Configurable buy percentage** (default: 50% of balance)
+- **Realistic transaction fee** (default: 0.1%)
+- **Full position tracking** and trade history
+- **Automatic calculation** of performance metrics
 
-### Métricas Calculadas
-- Saldo final total
-- Lucro/Prejuízo absoluto e percentual
-- Número total de trades
-- Taxa de vitória (win rate)
+### Calculated Metrics
+- Total final balance
+- Absolute and percentage profit/loss
+- Total number of trades
+- Win rate
 - Sharpe Ratio
-- Drawdown máximo
-- Retorno anualizado
+- Maximum drawdown
+- Annualized return
 
-### Exportação de Dados
-- **CSV de trades**: Histórico detalhado de todas as operações
-- **CSV de métricas**: Resumo de performance
-- **Nomenclatura automática**: `{Estratégia}_{Moeda}_{Tipo}_{Timestamp}.csv`
+### Data Export
+- **Trades CSV**: Detailed history of all operations
+- **Metrics CSV**: Performance summary
+- **Automatic naming**: `{Strategy}_{Currency}_{Type}_{Timestamp}.csv`
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 trading-bot/
-├── fetchers/           # Fetchers de dados de mercado
-│   ├── binance_fetchers.py
-│   └── interface.py
-├── strategies/         # Estratégias de trading
-│   ├── context.py      # SandBoxTradingContext (SIMULAÇÃO)
-│   ├── interface.py    # Interfaces base
-│   └── strategies.py   # Implementações de estratégias
-├── data/              # Arquivos CSV gerados (criado automaticamente)
-├── main.py            # Comparação de múltiplas estratégias
-├── exemplo_uso.py     # Exemplos de uso
-└── requirements.txt   # Dependências
+├── fetchers/ # Market data fetchers
+│ ├── binance_fetchers.py
+│ └── interface.py
+├── strategies/ # Trading strategies
+│ ├── context.py # SandBoxTradingContext (SIMULATION)
+│ ├── interface.py # Base interfaces
+│ └── strategies.py # Strategy implementations
+├── data/ # Generated CSV files (created automatically)
+├── main.py # Comparison of multiple strategies
+├── exemplo_uso.py # Usage examples
+└── requirements.txt # Dependencies
 ```
 
-## 🛠️ Instalação
 
-1. Clone o repositório:
+## 🛠️ Installation
+
+1. Clone the repository:
 ```bash
-git clone <seu-repositorio>
+git clone <your-repository>
 cd trading-bot
 ```
 
-2. Instale as dependências:
+2. Install the dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-## 📊 Uso Básico
+## 📊 Basic Usage
 
-### Exemplo Simples
+### Simple Example
 
 ```python
 from fetchers.binance_fetchers import BinancePriceFetcher
 from strategies.strategies import SimpleMovingAverageStrategy
 from strategies.context import SandBoxTradingContext
 
-# Inicializar
+# Initialize
 price_fetcher = BinancePriceFetcher()
 strategy = SimpleMovingAverageStrategy(short_window=10, long_window=20)
 
-# Configurar simulação
+# Configure simulation
 context = SandBoxTradingContext(
     strategy=strategy,
     price_fetcher=price_fetcher,
     symbol="BTC/USDT",
     timeframe="4h",
     limit=200,
-    initial_cash=1000.0,      # $1000 inicial
-    buy_percentage=0.5,       # 50% por trade
-    transaction_fee=0.001     # 0.1% de taxa
+    initial_cash=1000.0,      # $1000 initial
+    buy_percentage=0.5,       # 50% per trade
+    transaction_fee=0.001     # 0.1% fee
 )
 
-# Executar simulação
+# Run simulation
 results = context.run()
 
-# Ver resumo
+# View summary
 context.print_summary()
 
-# Exportar resultados
+# Export results
 files = context.export_results("./data")
 ```
 
-### Comparação de Estratégias
+### Strategy Comparison
 
-Execute o script principal para comparar múltiplas estratégias:
+Run the main script to compare multiple strategies:
 
 ```bash
 python main.py
 ```
 
-Isso irá:
-- Testar 3 estratégias diferentes (SMA Rápida, Média, Lenta)
-- Em 3 moedas (BTC/USDT, ETH/USDT, ADA/USDT)
-- Com 2 timeframes (4h, 12h)
-- Gerar arquivos CSV com todos os resultados
-- Mostrar ranking das melhores performances
+This will:
+- Test 3 different strategies (Fast, Medium, and Slow SMA)
+- On 3 currencies (BTC/USDT, ETH/USDT, ADA/USDT)
+- With 2 timeframes (4h, 12h)
+- Generate CSV files with all results
+- Show a ranking of the best performances
 
-### Exemplos Detalhados
+### Detailed Examples
 
 ```bash
 python exemplo_uso.py
 ```
 
-## ⚙️ Parâmetros de Configuração
+## ⚙️ Configuration Parameters
 
 ### SandBoxTradingContext
 
-| Parâmetro | Tipo | Padrão | Descrição |
-|-----------|------|--------|-----------|
-| `initial_cash` | float | 1000.0 | Saldo inicial em USD |
-| `buy_percentage` | float | 0.5 | Percentual do saldo para cada compra (0.0-1.0) |
-| `transaction_fee` | float | 0.001 | Taxa de transação (0.1% = 0.001) |
-| `timeframe` | str | "1h" | Timeframe dos dados (1m, 5m, 1h, 4h, 1d, etc.) |
-| `limit` | int | 100 | Número de candles para buscar |
-| `verbose` | bool | False | Mostrar logs detalhados |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initial_cash` | float | 1000.0 | Initial balance in USD |
+| `buy_percentage` | float | 0.5 | Percentage of balance for each buy (0.0-1.0) |
+| `transaction_fee` | float | 0.001 | Transaction fee (0.1% = 0.001) |
+| `timeframe` | str | "1h" | Data timeframe (1m, 5m, 1h, 4h, 1d, etc.) |
+| `limit` | int | 100 | Number of candles to fetch |
+| `verbose` | bool | False | Show detailed logs |
 
-### Estratégias Disponíveis
+### Available Strategies
 
 #### SimpleMovingAverageStrategy
-- `short_window`: Janela da média móvel curta (padrão: 3)
-- `long_window`: Janela da média móvel longa (padrão: 5)
+- `short_window`: Short moving average window (default: 3)
+- `long_window`: Long moving average window (default: 5)
 
-## 📈 Métricas de Performance
+## 📈 Performance Metrics
 
-### Métricas Básicas
-- **Saldo Final**: Valor total do portfólio ao final
-- **Retorno Total**: Lucro/prejuízo em valor absoluto
-- **Retorno %**: Lucro/prejuízo em percentual
-- **Total de Trades**: Número de operações executadas
+### Basic Metrics
+- **Final Balance**: Total portfolio value at the end
+- **Total Return**: Profit/loss in absolute value
+- **Return %**: Profit/loss as a percentage
+- **Total Trades**: Number of operations executed
 
-### Métricas Avançadas
-- **Taxa de Vitória**: Percentual de trades lucrativos
-- **Sharpe Ratio**: Retorno ajustado ao risco
-- **Drawdown Máximo**: Maior queda percentual do pico
-- **Retorno Anualizado**: Projeção anual baseada no período
+### Advanced Metrics
+- **Win Rate**: Percentage of profitable trades
+- **Sharpe Ratio**: Risk-adjusted return
+- **Maximum Drawdown**: Largest percentage drop from peak
+- **Annualized Return**: Annual projection based on the period
 
-## 📁 Arquivos Gerados
+## 📁 Generated Files
 
-### CSV de Trades
-Contém cada operação executada:
+### Trades CSV
+Contains every operation executed:
 - timestamp, action, price, quantity, value, fee
 - cash_after, position_after
 
-### CSV de Métricas
-Resumo de performance:
-- Todas as métricas calculadas
-- Parâmetros utilizados na simulação
+### Metrics CSV
+Performance summary:
+- All calculated metrics
+- Parameters used in the simulation
 
-### Nomenclatura
+### Naming
 - `SimpleMovingAverage_BTCUSDT_trades_20250118_143022.csv`
 - `SimpleMovingAverage_BTCUSDT_metrics_20250118_143022.csv`
 
-## 🔧 Desenvolvendo Novas Estratégias
+## 🔧 Developing New Strategies
 
-1. Herde da classe `Strategy`:
+1. Inherit from the `Strategy` class:
 
 ```python
 from strategies.interface import Strategy
 
-class MinhaEstrategia(Strategy):
-    def __init__(self, parametro1, parametro2):
-        self.parametro1 = parametro1
-        self.parametro2 = parametro2
-        # Inicializar estado da estratégia
+class MyStrategy(Strategy):
+    def __init__(self, parameter1, parameter2):
+        self.parameter1 = parameter1
+        self.parameter2 = parameter2
+        # Initialize strategy state
     
     def reset(self):
-        """Reset do estado para nova simulação"""
-        # Limpar histórico, contadores, etc.
+        """Reset state for a new simulation"""
+        # Clear history, counters, etc.
         pass
     
     def decide(self, candle):
-        """Lógica de decisão baseada no candle"""
-        # Analisar candle
-        # Retornar: {"action": "buy"|"sell"|"hold", ...}
+        """Decision logic based on the candle"""
+        # Analyze candle
+        # Return: {"action": "buy"|"sell"|"hold", ...}
         return {**candle, "action": "hold"}
 ```
 
-2. Use com SandBoxTradingContext:
+2. Use with SandBoxTradingContext:
 
 ```python
-minha_estrategia = MinhaEstrategia(parametro1=10, parametro2=20)
-context = SandBoxTradingContext(minha_estrategia, price_fetcher, "BTC/USDT")
+my_strategy = MyStrategy(parameter1=10, parameter2=20)
+context = SandBoxTradingContext(my_strategy, price_fetcher, "BTC/USDT")
 ```
 
-## 🎯 Exemplos de Uso
+## 🎯 Usage Examples
 
-### Teste Rápido
+### Quick Test
 ```bash
 python exemplo_uso.py
 ```
 
-### Comparação Completa
+### Full Comparison
 ```bash
 python main.py
 ```
 
-### Uso Programático
+### Programmatic Usage
 ```python
-# Ver exemplo_uso.py para exemplos detalhados
+# See exemplo_uso.py for detailed examples
 ```
 
-## 📊 Interpretando Resultados
+## 📊 Interpreting Results
 
-### Retorno Positivo
-- Estratégia lucrativa no período testado
-- Verificar consistência em diferentes moedas/timeframes
+### Positive Return
+- Profitable strategy in the tested period
+- Check consistency across different currencies/timeframes
 
-### Taxa de Vitória Alta
-- Estratégia acerta muitas operações
-- Pode indicar estratégia conservadora
+### High Win Rate
+- Strategy gets many operations right
+- May indicate a conservative strategy
 
-### Sharpe Ratio Alto
-- Boa relação risco/retorno
-- Estratégia mais estável
+### High Sharpe Ratio
+- Good risk/return ratio
+- More stable strategy
 
-### Drawdown Baixo
-- Menor risco de perdas grandes
-- Estratégia mais defensiva
+### Low Drawdown
+- Lower risk of large losses
+- More defensive strategy
 
-## ⚠️ Avisos Importantes
+## ⚠️ Important Warnings
 
-1. **Simulação vs Realidade**: Resultados passados não garantem performance futura
-2. **Taxas Reais**: Verifique as taxas reais da exchange antes de trading real
-3. **Slippage**: Simulação não considera slippage de mercado
-4. **Liquidez**: Mercados com baixa liquidez podem ter comportamento diferente
+1. **Simulation vs. Reality**: Past results do not guarantee future performance
+2. **Real Fees**: Check the exchange's actual fees before live trading
+3. **Slippage**: The simulation does not account for market slippage
+4. **Liquidity**: Low-liquidity markets may behave differently
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-1. Fork o projeto
-2. Crie uma branch para sua feature
-3. Implemente sua estratégia ou melhoria
-4. Teste com diferentes configurações
-5. Submeta um pull request
+1. Fork the project
+2. Create a branch for your feature
+3. Implement your strategy or improvement
+4. Test with different configurations
+5. Submit a pull request
 
-## 📝 Licença
+## 📝 License
 
-Veja o arquivo LICENSE para detalhes.
+See the LICENSE file for details.
